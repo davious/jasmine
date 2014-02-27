@@ -1,15 +1,10 @@
 {
-  "src_dir": "src",
-  "src_files": [
-    "core/requireCore.js",
-    "console/requireConsole.js",
-    "core",
-    "console",
-    "version.js"
-  ],
   "spec_dir": "spec",
   "spec_files": [
     "core/**/*.js",
-    "console/**/*.js",
+    "console/**/*.js"
+  ],
+  "helper_files": [
+    "helpers/nodeDefineJasmineUnderTest.js"
   ]
 }
