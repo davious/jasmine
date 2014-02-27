@@ -12,6 +12,7 @@
     "lib/console",
     "lib/jasmine-core"
   ],
+  "main": "./lib/jasmine-core.js",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.0",
