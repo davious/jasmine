@@ -34,11 +34,20 @@ module.exports = function(grunt) {
     ]
   );
 
-  var spec = require('./grunt/tasks/spec.js');
-
   grunt.registerTask("execSpecsInNode",
-  "Run Jasmine core specs in Node.js",
-    spec.execSpecsInNode
+    "Run Jasmine core specs in Node.js",
+    function() {
+      var exit_code = require("shelljs").exec("jasmine");
+      if (exit_code !== 0) {
+        grunt.fail.fatal("Specs Failed", exit_code);
+      }
+    }
   );
 
+  grunt.registerTask("execSpecsInNode:performance",
+    "Run Jasmine performance specs in Node.js",
+    function() {
+      require("shelljs").exec("JASMINE_JSON=spec/support/jasmine-performance.json jasmine");
+    }
+  );
 };
