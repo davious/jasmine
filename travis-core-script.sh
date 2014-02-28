@@ -18,4 +18,4 @@ bundle exec rake jasmine:ci
 sh -e /etc/init.d/xvfb start
 sudo sh -e travis-python-setup.sh
 
-DISPLAY=:99.0 bundle exec rake jasmine_core_spec && tox
+tox
