@@ -12,10 +12,3 @@ then
 fi
 
 bundle exec rake jasmine:ci
-
-#python stuff:
-
-sh -e /etc/init.d/xvfb start
-sudo sh -e travis-python-setup.sh
-
-tox
