@@ -14,7 +14,7 @@ describe('Spies', function () {
       expect(spy.bob).toEqual("test");
     });
 
-    it("warns the user that we indend to overwrite an existing property", function() {
+    it("warns the user that we intend to overwrite an existing property", function() {
       TestClass.prototype.someFunction.and = "turkey";
 
       expect(function() {
@@ -27,6 +27,25 @@ describe('Spies', function () {
 
       expect(spy.and).toEqual(jasmine.any(j$.SpyStrategy));
       expect(spy.calls).toEqual(jasmine.any(j$.CallTracker));
+    });
+
+    it("tracks the argument of calls", function () {
+      var spy = j$.createSpy(TestClass.prototype, TestClass.prototype.someFunction);
+      var trackSpy = spyOn(spy.calls, "track");
+
+      spy("arg");
+
+      expect(trackSpy.calls.mostRecent().args[0].args).toEqual(["arg"]);
+    });
+
+    it("tracks the context of calls", function () {
+      var spy = j$.createSpy(TestClass.prototype, TestClass.prototype.someFunction);
+      var trackSpy = spyOn(spy.calls, "track");
+
+      var contextObject = { spyMethod: spy };
+      contextObject.spyMethod();
+
+      expect(trackSpy.calls.mostRecent().args[0].object).toEqual(contextObject);
     });
   });
 

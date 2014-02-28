@@ -4,7 +4,8 @@ describe("toThrow", function() {
 
     expect(function() {
       matcher.compare({});
-    }).toThrow(new Error("Actual is not a Function")); // TODO: this needs to change for self-test
+      matcherComparator({});
+    }).toThrowError("Actual is not a Function");
   });
 
   it("fails if actual does not throw", function() {

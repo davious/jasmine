@@ -342,23 +342,18 @@ describe("Clock (acceptance)", function() {
     expect(delayedFn2).toHaveBeenCalled();
   });
 
-  it("calls the global clearTimeout correctly when not installed", function() {
-    var delayedFunctionScheduler = jasmine.createSpyObj('delayedFunctionScheduler', ['clearTimeout']),
-      global = jasmine.getGlobal(),
-      clock = new j$.Clock(global, delayedFunctionScheduler);
+  it("correctly calls functions scheduled while the Clock is advancing", function() {
+    var delayedFn1 = jasmine.createSpy('delayedFn1'),
+        delayedFn2 = jasmine.createSpy('delayedFn2'),
+        delayedFunctionScheduler = new j$.DelayedFunctionScheduler(),
+        clock = new j$.Clock({setTimeout: function() {}}, delayedFunctionScheduler);
 
-    expect(function() {
-      clock.clearTimeout(123)
-    }).not.toThrow();
-  });
+    delayedFn1.and.callFake(function() { clock.setTimeout(delayedFn2, 1); });
+    clock.install();
+    clock.setTimeout(delayedFn1, 5);
 
-  it("calls the global clearTimeout correctly when not installed", function() {
-    var delayedFunctionScheduler = jasmine.createSpyObj('delayedFunctionScheduler', ['clearTimeout']),
-      global = jasmine.getGlobal(),
-      clock = new j$.Clock(global, delayedFunctionScheduler);
-
-    expect(function() {
-      clock.clearInterval(123)
-    }).not.toThrow();
+    clock.tick(6);
+    expect(delayedFn1).toHaveBeenCalled();
+    expect(delayedFn2).toHaveBeenCalled();  
   });
 });

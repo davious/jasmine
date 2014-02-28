@@ -6,13 +6,12 @@ getJasmineRequireObj().base = function(j$) {
   j$.MAX_PRETTY_PRINT_DEPTH = 40;
   j$.DEFAULT_TIMEOUT_INTERVAL = 5000;
 
-  j$.getGlobal = function() {
-    function getGlobal() {
-      return this;
-    }
-
-    return getGlobal();
-  };
+  j$.getGlobal = (function() {
+    var jasmineGlobal = eval.call(null, "this");
+    return function() {
+      return jasmineGlobal;
+    };
+  })();
 
   j$.getEnv = function(options) {
     var env = j$.currentEnv_ = j$.currentEnv_ || new j$.Env(options);
@@ -51,18 +50,18 @@ getJasmineRequireObj().base = function(j$) {
   j$.createSpy = function(name, originalFn) {
 
     var spyStrategy = new j$.SpyStrategy({
-          name: name,
-          fn: originalFn,
-          getSpy: function() { return spy; }
-        }),
-        callTracker = new j$.CallTracker(),
-        spy = function() {
-          callTracker.track({
-            object: this,
-            args: Array.prototype.slice.apply(arguments)
-          });
-          return spyStrategy.exec.apply(this, arguments);
-        };
+        name: name,
+        fn: originalFn,
+        getSpy: function() { return spy; }
+      }),
+      callTracker = new j$.CallTracker(),
+      spy = function() {
+        callTracker.track({
+          object: this,
+          args: Array.prototype.slice.apply(arguments)
+        });
+        return spyStrategy.exec.apply(this, arguments);
+      };
 
     for (var prop in originalFn) {
       if (prop === 'and' || prop === 'calls') {
@@ -83,7 +82,7 @@ getJasmineRequireObj().base = function(j$) {
       return false;
     }
     return putativeSpy.and instanceof j$.SpyStrategy &&
-        putativeSpy.calls instanceof j$.CallTracker;
+      putativeSpy.calls instanceof j$.CallTracker;
   };
 
   j$.createSpyObj = function(baseName, methodNames) {
@@ -95,9 +94,5 @@ getJasmineRequireObj().base = function(j$) {
       obj[methodNames[i]] = j$.createSpy(baseName + '.' + methodNames[i]);
     }
     return obj;
-  };
-
-  j$.addCustomEqualityTester = function(tester) {
-    j$.getEnv().addCustomEqualityTester(tester);
   };
 };

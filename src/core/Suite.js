@@ -5,7 +5,6 @@ getJasmineRequireObj().Suite = function() {
     this.parentSuite = attrs.parentSuite;
     this.description = attrs.description;
     this.onStart = attrs.onStart || function() {};
-    this.completeCallback = attrs.completeCallback || function() {}; // TODO: this is unused
     this.resultCallback = attrs.resultCallback || function() {};
     this.clearStack = attrs.clearStack || function(fn) {fn();};
 
@@ -14,9 +13,7 @@ getJasmineRequireObj().Suite = function() {
     this.queueRunner = attrs.queueRunner || function() {};
     this.disabled = false;
 
-    this.children_ = []; // TODO: rename
-    this.suites = []; // TODO: needed?
-    this.specs = [];  // TODO: needed?
+    this.children = [];
 
     this.result = {
       id: this.id,
@@ -48,19 +45,8 @@ getJasmineRequireObj().Suite = function() {
     this.afterFns.unshift(fn);
   };
 
-  Suite.prototype.addSpec = function(spec) {
-    this.children_.push(spec);
-    this.specs.push(spec);   // TODO: needed?
-  };
-
-  Suite.prototype.addSuite = function(suite) {
-    suite.parentSuite = this;
-    this.children_.push(suite);
-    this.suites.push(suite);    // TODO: needed?
-  };
-
-  Suite.prototype.children = function() {
-    return this.children_;
+  Suite.prototype.addChild = function(child) {
+    this.children.push(child);
   };
 
   Suite.prototype.execute = function(onComplete) {
@@ -70,11 +56,10 @@ getJasmineRequireObj().Suite = function() {
       return;
     }
 
-    var allFns = [],
-      children = this.children_;
+    var allFns = [];
 
-    for (var i = 0; i < children.length; i++) {
-      allFns.push(wrapChildAsAsync(children[i]));
+    for (var i = 0; i < this.children.length; i++) {
+      allFns.push(wrapChildAsAsync(this.children[i]));
     }
 
     this.onStart(this);
@@ -96,7 +81,7 @@ getJasmineRequireObj().Suite = function() {
       return function(done) { child.execute(done); };
     }
   };
-  
+
   return Suite;
 };
 

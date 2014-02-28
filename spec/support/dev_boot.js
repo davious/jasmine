@@ -39,15 +39,10 @@
       return env.pending();
     },
 
-    addMatchers: function(matchers) {
-      return env.addMatchers(matchers);
-    },
-
     spyOn: function(obj, methodName) {
       return env.spyOn(obj, methodName);
     },
 
-    clock: env.clock,
     jsApiReporter: new jasmine.JsApiReporter({
       timer: new jasmine.Timer()
     })
@@ -59,6 +54,18 @@
     extend(window, jasmineInterface);
   }
 
+  jasmine.addCustomEqualityTester = function(tester) {
+    env.addCustomEqualityTester(tester);
+  };
+
+  jasmine.addMatchers = function(matchers) {
+    return env.addMatchers(matchers);
+  };
+
+  jasmine.clock = function() {
+    return env.clock;
+  };
+
   var queryString = new jasmine.QueryString({
     getWindowLocation: function() { return window.location; }
   });
@@ -69,7 +76,6 @@
 
   var htmlReporter = new jasmine.HtmlReporter({
     env: env,
-    queryString: queryString,
     onRaiseExceptionsClick: function() { queryString.setParam("catch", !env.catchingExceptions()); },
     getContainer: function() { return document.body; },
     createElement: function() { return document.createElement.apply(document, arguments); },
@@ -87,6 +93,11 @@
   env.specFilter = function(spec) {
     return specFilter.matches(spec.getFullName());
   };
+
+  window.setTimeout = window.setTimeout;
+  window.setInterval = window.setInterval;
+  window.clearTimeout = window.clearTimeout;
+  window.clearInterval = window.clearInterval;
 
   var currentWindowOnload = window.onload;
 

@@ -13,7 +13,8 @@ getJasmineRequireObj().Clock = function() {
         setInterval: setInterval,
         clearInterval: clearInterval
       },
-      installed = false;
+      installed = false,
+      timer;
 
     self.install = function() {
       replace(global, fakeTimingFunctions);
@@ -60,7 +61,7 @@ getJasmineRequireObj().Clock = function() {
       if (installed) {
         delayedFunctionScheduler.tick(millis);
       } else {
-        throw new Error("Mock clock is not installed, use jasmine.getEnv().clock.install()");
+        throw new Error("Mock clock is not installed, use jasmine.clock().install()");
       }
     };
 
@@ -68,8 +69,6 @@ getJasmineRequireObj().Clock = function() {
 
     function legacyIE() {
       //if these methods are polyfilled, apply will be present
-      //TODO: it may be difficult to load the polyfill before jasmine loads
-      //(env should be new-ed inside of onload)
       return !(realTimingFunctions.setTimeout || realTimingFunctions.setInterval).apply;
     }
 

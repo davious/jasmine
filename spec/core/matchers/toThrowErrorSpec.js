@@ -4,7 +4,7 @@ describe("toThrowError", function() {
 
     expect(function() {
       matcher.compare({});
-    }).toThrow(new Error("Actual is not a Function")); // TODO: this needs to change for self-test
+    }).toThrowError("Actual is not a Function");
   });
 
   it("throws an error when the expected is not an Error, string, or RegExp", function() {
@@ -15,7 +15,7 @@ describe("toThrowError", function() {
 
     expect(function() {
       matcher.compare(fn, 1);
-    }).toThrow(new Error("Expected is not an Error, string, or RegExp.")); // TODO: this needs to change for self-test
+    }).toThrowError("Expected is not an Error, string, or RegExp.");
   });
 
   it("throws an error when the expected error type is not an Error", function() {
@@ -26,7 +26,7 @@ describe("toThrowError", function() {
 
     expect(function() {
       matcher.compare(fn, void 0, "foo");
-    }).toThrow(new Error("Expected error type is not an Error.")); // TODO: this needs to change for self-test
+    }).toThrowError("Expected error type is not an Error.");
   });
 
   it("throws an error when the expected error message is not a string or RegExp", function() {
@@ -37,7 +37,7 @@ describe("toThrowError", function() {
 
     expect(function() {
       matcher.compare(fn, Error, 1);
-    }).toThrow(new Error("Expected error message is not a string or RegExp.")); // TODO: this needs to change for self-test
+    }).toThrowError("Expected error message is not a string or RegExp.");
   });
 
   it("fails if actual does not throw at all", function() {
@@ -246,7 +246,7 @@ describe("toThrowError", function() {
     expect(result.message).toEqual("Expected function to throw TypeError with message \"bar\", but it threw TypeError with message \"foo\".");
   });
 
-  it("passes if thrown is a type of Error and has the same type as the expected Error and the message matches the exepcted message", function() {
+  it("passes if thrown is a type of Error and has the same type as the expected Error and the message matches the expected message", function() {
     var util = {
         equals: jasmine.createSpy('delegated-equal').and.returnValue(true)
       },

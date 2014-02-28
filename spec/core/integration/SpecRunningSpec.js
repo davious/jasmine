@@ -1,11 +1,9 @@
-// TODO: This should really be part of the Env Integration Spec
 describe("jasmine spec running", function () {
   var env;
   var fakeTimer;
 
   beforeEach(function() {
     env = new j$.Env();
-    env.updateInterval = 0;
   });
 
   it('should assign spec ids sequentially', function() {
