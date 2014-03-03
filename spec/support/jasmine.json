@@ -4,6 +4,12 @@
     "core/**/*.js",
     "console/**/*.js"
   ],
+  "src_dir": "src",
+  "src_files": [
+    "core/**/*.js",
+    "console/**/*.js",
+    "version.js"
+  ],
   "helper_files": [
     "helpers/nodeDefineJasmineUnderTest.js"
   ]
