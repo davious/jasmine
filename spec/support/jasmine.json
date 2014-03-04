@@ -10,7 +10,7 @@
     "console/**/*.js",
     "version.js"
   ],
-  "helper_files": [
+  "helpers": [
     "helpers/nodeDefineJasmineUnderTest.js"
   ]
 }
